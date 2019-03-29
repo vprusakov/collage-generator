@@ -17,15 +17,12 @@ const collageGenerator = (function() {
   }
 
   function buildCollage() {
-    const quoteLayer = document.body.appendChild(
-      document.createElement("canvas")
-    );
-    const dimLayer = document.body.appendChild(
-      document.createElement("canvas")
-    );
-    const imagesLayer = document.body.appendChild(
-      document.createElement("canvas")
-    );
+    const collage = document.body.appendChild(document.createElement("div"));
+    collage.style.height = settings.sideSize + "px";
+
+    const quoteLayer = collage.appendChild(document.createElement("canvas"));
+    const dimLayer = collage.appendChild(document.createElement("canvas"));
+    const imagesLayer = collage.appendChild(document.createElement("canvas"));
 
     layers.push(imagesLayer, dimLayer, quoteLayer);
 
