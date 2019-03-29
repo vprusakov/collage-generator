@@ -92,6 +92,13 @@ const collageGenerator = (function() {
     });
   }
 
+  function getTextYPosition(maxHeight, text, fontSize) {
+    const textHeight = text.split("\n").length * fontSize;
+    const textYPosition =
+      textHeight > maxHeight ? 0 : maxHeight / 2 - textHeight / 2 + fontSize;
+    return [text, textYPosition];
+  }
+
   function drawDimLayer(ctx) {
     ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
     ctx.fillRect(0, 0, settings.sideSize, settings.sideSize);
