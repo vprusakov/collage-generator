@@ -70,7 +70,10 @@ const collageGenerator = (function() {
         true
       );
       xhr.onload = () => {
-        resolve(xhr.responseText);
+        const e = document.createElement("div");
+        e.innerHTML = JSON.parse(xhr.response)[0].content;
+        const responseText = e.childNodes[0].textContent;
+        resolve(responseText);
       };
       xhr.send();
     });
