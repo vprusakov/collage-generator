@@ -62,7 +62,7 @@ const collageGenerator = (function() {
       let xhr = new XMLHttpRequest();
       xhr.open(
         "GET",
-        `http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&${Math.floor(
+        `https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&${Math.floor(
           Math.random() * 1000
         )}`,
         true
