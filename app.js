@@ -195,6 +195,13 @@ const collageGenerator = (function() {
     });
   }
 
+  function appendDownloadButton() {
+    const button = document.body.appendChild(document.createElement("button"));
+    button.textContent = "Download";
+    button.style.marginTop = "20px";
+    button.addEventListener("click", downloadCollage.bind(null, layers), false);
+  }
+
   return {
     init: init
   };
