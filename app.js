@@ -31,6 +31,23 @@ const collageGenerator = (function() {
     drawDimLayer(dimLayer.getContext("2d"));
   }
 
+  function getQuote() {
+    return new Promise(resolve => {
+      let xhr = new XMLHttpRequest();
+      xhr.open(
+        "GET",
+        `http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&${Math.floor(
+          Math.random() * 1000
+        )}`,
+        true
+      );
+      xhr.onload = () => {
+        resolve(responseText);
+      };
+      xhr.send();
+    });
+  }
+
   function drawDimLayer(ctx) {
     ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
     ctx.fillRect(0, 0, settings.sideSize, settings.sideSize);
