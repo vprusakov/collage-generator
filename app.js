@@ -17,9 +17,17 @@ const collageGenerator = (function() {
   }
 
   function buildCollage() {
-    const quoteLayer = collage.appendChild(document.createElement("canvas"));
-    const dimLayer = collage.appendChild(document.createElement("canvas"));
-    const imagesLayer = collage.appendChild(document.createElement("canvas"));
+    const quoteLayer = document.body.appendChild(
+      document.createElement("canvas")
+    );
+    const dimLayer = document.body.appendChild(
+      document.createElement("canvas")
+    );
+    const imagesLayer = document.body.appendChild(
+      document.createElement("canvas")
+    );
+
+    layers.push(imagesLayer, dimLayer, quoteLayer);
 
     layers.map((layer, index) => {
       layer.width = settings.sideSize;
@@ -29,6 +37,16 @@ const collageGenerator = (function() {
     });
 
     drawDimLayer(dimLayer.getContext("2d"));
+    drawQuote(dimLayer.getContext("2d"));
+  }
+
+  function drawQuote(ctx) {
+    const fontSize = 24;
+    ctx.fillStyle = "#fff";
+    ctx.font = `${fontSize}px Arial`;
+    ctx.textAlign = "center";
+
+    getQuote().then(quote => wrapQuote(ctx, settings.sideSize, quote));
   }
 
   function getQuote() {
@@ -42,7 +60,7 @@ const collageGenerator = (function() {
         true
       );
       xhr.onload = () => {
-        resolve(responseText);
+        resolve(xhr.responseText);
       };
       xhr.send();
     });
