@@ -199,6 +199,22 @@ const collageGenerator = (function() {
     button.addEventListener("click", downloadCollage.bind(null, layers), false);
   }
 
+  function downloadCollage(layers) {
+    const resultLayer = document.createElement("canvas");
+    resultLayer.width = settings.sideSize;
+    resultLayer.height = settings.sideSize;
+    const link = document.createElement("a");
+
+    layers.reduce((acc, layer) => {
+      acc.drawImage(layer, 0, 0);
+      return acc;
+    }, resultLayer.getContext("2d"));
+
+    link.download = "collage";
+    link.href = resultLayer.toDataURL("image/png");
+    link.click();
+  }
+
   return {
     init: init
   };
