@@ -66,6 +66,32 @@ const collageGenerator = (function() {
     });
   }
 
+  function wrapQuote(ctx, maxWidth, text) {
+    return new Promise(resolve => {
+      const words = text.split(" ");
+
+      const wrappedText = words.reduce(
+        (acc, word) => {
+          const extLine =
+            acc.currLine === "" ? word : `${acc.currLine} ${word}`;
+          const isOverflows = ctx.measureText(extLine).width > maxWidth;
+          if (acc.currLine === "" && isOverflows) {
+            acc.wrapped = `${acc.wrapped}\n${word}`;
+          } else if (isOverflows) {
+            acc.wrapped = `${acc.wrapped}\n${acc.currLine}`;
+            acc.currLine = word;
+          } else {
+            acc.currLine = extLine;
+          }
+          return acc;
+        },
+        { wrapped: "", currLine: "" }
+      );
+
+      resolve(`${wrappedText.wrapped}\n${wrappedText.currLine}`.trim());
+    });
+  }
+
   function drawDimLayer(ctx) {
     ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
     ctx.fillRect(0, 0, settings.sideSize, settings.sideSize);
