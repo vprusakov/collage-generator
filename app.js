@@ -38,6 +38,7 @@ const collageGenerator = (function() {
 
     drawDimLayer(dimLayer.getContext("2d"));
     drawQuote(dimLayer.getContext("2d"));
+    drawImages(imagesLayer.getContext("2d")).then(() => appendDownloadButton());
   }
 
   function drawQuote(ctx) {
@@ -115,6 +116,83 @@ const collageGenerator = (function() {
   function drawDimLayer(ctx) {
     ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
     ctx.fillRect(0, 0, settings.sideSize, settings.sideSize);
+  }
+
+  function drawImages(ctx) {
+    return new Promise(resolve => {
+      const totalImages = 4;
+      let totalImagesLoaded = 0;
+      const isLastLoaded = () =>
+        ++totalImagesLoaded === totalImages && resolve();
+
+      const topLeftImage = new Image();
+      topLeftImage.crossOrigin = "anonymous";
+      const topLeftImageWidth = settings.intersectionPoint.x;
+      const topLeftImageHeight = settings.intersectionPoint.y;
+      topLeftImage.onload = () => {
+        ctx.drawImage(
+          topLeftImage,
+          0,
+          0,
+          topLeftImageWidth,
+          topLeftImageHeight
+        );
+        isLastLoaded();
+      };
+      topLeftImage.src = `https://source.unsplash.com/random/${topLeftImageWidth}x${topLeftImageHeight}/?sig=1`;
+
+      const topRightImage = new Image();
+      topRightImage.crossOrigin = "anonymous";
+      const topRightImageWidth =
+        settings.sideSize - settings.intersectionPoint.x;
+      const topRightImageHeight = settings.intersectionPoint.y;
+      topRightImage.onload = () => {
+        ctx.drawImage(
+          topRightImage,
+          settings.intersectionPoint.x,
+          0,
+          topRightImageWidth,
+          topRightImageHeight
+        );
+        isLastLoaded();
+      };
+      topRightImage.src = `https://source.unsplash.com/random/${topRightImageWidth}x${topRightImageHeight}/?sig=2`;
+
+      const bottomLeftImage = new Image();
+      bottomLeftImage.crossOrigin = "anonymous";
+      const bottomLeftImageWidth = settings.intersectionPoint.x;
+      const bottomLeftImageHeight =
+        settings.sideSize - settings.intersectionPoint.y;
+      bottomLeftImage.onload = () => {
+        ctx.drawImage(
+          bottomLeftImage,
+          0,
+          settings.intersectionPoint.y,
+          bottomLeftImageWidth,
+          bottomLeftImageHeight
+        );
+        isLastLoaded();
+      };
+      bottomLeftImage.src = `https://source.unsplash.com/random/${bottomLeftImageWidth}x${bottomLeftImageHeight}/?sig=3`;
+
+      const bottomRightImage = new Image();
+      bottomRightImage.crossOrigin = "anonymous";
+      const bottomRightImageWidth =
+        settings.sideSize - settings.intersectionPoint.x;
+      const bottomRightImageHeight =
+        settings.sideSize - settings.intersectionPoint.y;
+      bottomRightImage.onload = () => {
+        ctx.drawImage(
+          bottomRightImage,
+          settings.intersectionPoint.x,
+          settings.intersectionPoint.y,
+          bottomRightImageWidth,
+          bottomRightImageHeight
+        );
+        isLastLoaded();
+      };
+      bottomRightImage.src = `https://source.unsplash.com/random/${bottomRightImageWidth}x${bottomRightImageHeight}/?sig=4`;
+    });
   }
 
   return {
