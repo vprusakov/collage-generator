@@ -27,6 +27,13 @@ const collageGenerator = (function() {
       layer.style.zIndex = index;
       layer.style.position = "absolute";
     });
+
+    drawDimLayer(dimLayer.getContext("2d"));
+  }
+
+  function drawDimLayer(ctx) {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+    ctx.fillRect(0, 0, settings.sideSize, settings.sideSize);
   }
 
   return {
