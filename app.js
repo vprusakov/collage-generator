@@ -46,7 +46,17 @@ const collageGenerator = (function() {
     ctx.font = `${fontSize}px Arial`;
     ctx.textAlign = "center";
 
-    getQuote().then(quote => wrapQuote(ctx, settings.sideSize, quote));
+    getQuote()
+      .then(quote => wrapQuote(ctx, settings.sideSize, quote))
+      .then(wrappedQuote =>
+        getTextYPosition(settings.sideSize, wrappedQuote, fontSize)
+      )
+      .then(([wrappedQuote, quoteYPosition]) =>
+        wrappedQuote.split("\n").reduce((acc, line) => {
+          ctx.fillText(line, settings.sideSize / 2, acc);
+          return acc + fontSize;
+        }, quoteYPosition)
+      );
   }
 
   function getQuote() {
